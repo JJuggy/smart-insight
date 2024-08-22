@@ -5,7 +5,6 @@
   "repository": "https://github.com/JJuggy/smart-insight.git",
   "author": "Amiolemen David",
   "license": "MIT",
-  "type": "module",
   "private": false,
   "dependencies": {
     "@types/express": "^4.17.21",
