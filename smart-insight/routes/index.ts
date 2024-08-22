@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { sqlConnection } from "..";
 import { getAllAutoBots, getAllComments, getAllPosts } from "../database";
 
 const router = Router();

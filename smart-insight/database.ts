@@ -3,9 +3,9 @@ import { sqlConnection } from ".";
 
 export const getAllAutoBots = async (req: Request, res: Response) => {
   try {
-    const results = sqlConnection.query(`SELECT * FROM Autobots`);
+    const connection = await sqlConnection.getConnection();
+    const results = await connection.query(`SELECT * FROM Autobots`);
     console.log("results", results);
-
     res.json(results);
   } catch (error) {
     console.error("Error fetching posts:", error);
@@ -16,7 +16,8 @@ export const getAllPosts = async (req: Request, res: Response) => {
   const autobotId = req.params.id;
   try {
     // Acquire connection from pool
-    const results = await sqlConnection.query(
+    const connection = await sqlConnection.getConnection();
+    const results = await connection.query(
       "SELECT * FROM Posts WHERE autobot_id = ?",
       [autobotId]
     );
@@ -30,8 +31,8 @@ export const getAllPosts = async (req: Request, res: Response) => {
 export const getAllComments = async (req: Request, res: Response) => {
   try {
     const postId = req.params.id;
-
-    const results = await sqlConnection.query(
+    const connection = await sqlConnection.getConnection();
+    const results = await connection.query(
       "SELECT * FROM Comments WHERE post_id = ?",
       [postId]
     );
