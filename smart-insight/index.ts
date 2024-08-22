@@ -4,7 +4,7 @@ import "dotenv/config";
 import cron from "node-cron";
 import router from "./routes";
 import axios from "axios";
-import mysql from "mysql2/promise";
+import mysql from "mysql2";
 const port = appConfig.port;
 
 const app: Application = express();
@@ -12,20 +12,19 @@ app.use(express.json());
 
 app.use("/", router);
 
-export const sqlConnection = mysql.createPool({
-  host: appConfig.DB_HOST,
-  user: appConfig.DB_USER,
-  password: appConfig.DB_PASSWORD,
-  database: appConfig.DB_NAME,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
+export const sqlConnection = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "password",
+  database: 'autobot_db',
 });
 
 const start = async () => {
   try {
-    await sqlConnection.getConnection();
-    console.log("Connected to MySQL database");
+    await sqlConnection.connect((err) => {
+      if (err) throw err;
+      console.log("Connected to MySQL database!");
+    });
     app.listen(port, () => {
       console.log("Listening on port:", port);
     });
