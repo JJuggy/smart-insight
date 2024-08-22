@@ -11,19 +11,20 @@ const app: Application = express();
 app.use(express.json());
 
 app.use("/", router);
-const sqlConnection = mysql.createPool({
+
+export const sqlConnection = mysql.createPool({
   host: appConfig.DB_HOST,
   user: appConfig.DB_USER,
   password: appConfig.DB_PASSWORD,
   database: appConfig.DB_NAME,
   waitForConnections: true,
-  connectionLimit: 10, // Adjust this based on your needs
+  connectionLimit: 10,
   queueLimit: 0,
 });
 
 const start = async () => {
   try {
-    const connection = await sqlConnection.getConnection();
+    await sqlConnection.getConnection();
     console.log("Connected to MySQL database");
     app.listen(port, () => {
       console.log("Listening on port:", port);
