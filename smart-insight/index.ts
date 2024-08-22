@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from "express";
+import express, { Application } from "express";
 import { appConfig } from "./config/config";
 import "dotenv/config";
 import cron from "node-cron";
@@ -9,7 +9,6 @@ const port = appConfig.port;
 
 const app: Application = express();
 app.use(express.json());
-
 app.use("/", router);
 
 export const sqlConnection = mysql.createPool({
@@ -42,7 +41,6 @@ const createAutobots = async () => {
         "INSERT INTO Autobots (name) VALUES (?)",
         [autobotName]
       );
-
       const autobotId: number = autobotResults.insertId;
 
       // Create Posts
@@ -77,7 +75,6 @@ const createAutobots = async () => {
       }
     } catch (error) {
       console.error("Error during autobot creation process:", error);
-      // Consider adding more sophisticated error handling here, such as rolling back transactions or retrying failed operations.
     }
   }
 };
