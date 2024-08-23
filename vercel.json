@@ -1,6 +1,15 @@
-
-
 {
   "version": 2,
-  "rewrites": [{ "source": "/(.*)", "destination": "../smart-insight/index.js" }]
+  "builds": [
+    {
+      "src": "../smart-insight/index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "../smart-insight/index.js"
+    }
+  ]
 }
