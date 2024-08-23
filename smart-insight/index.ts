@@ -10,15 +10,15 @@ import rateLimit from "express-rate-limit";
 
 const app: Application = express();
 const limiter = rateLimit({
-  windowMs: 5 * 60 * 1000,
-  max: 10,
+  windowMs: 1 * 60 * 1000,
+  max: 5,
   message: "Too many requests from this IP, please try again later.",
 });
 app.use(express.json());
 app.use("/", router);
 app.use(cors());
-app.use(limiter);
 
+app.use(limiter);
 const port = appConfig.port;
 export const sqlConnection = mysql.createPool({
   host: "localhost",
