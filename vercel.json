@@ -1,4 +1,6 @@
+
+
 {
   "version": 2,
-  "rewrites": [{ "source": "/(.*)", "destination": "/smart-insight" }]
+  "rewrites": [{ "source": "/(.*)", "destination": "../smart-insight/index.js" }]
 }
