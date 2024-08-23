@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "../smart-insight/index.js",
+      "src": "../smart-insight/index.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "../smart-insight/index.js"
+      "dest": "../smart-insight/index.ts"
     }
   ]
 }
