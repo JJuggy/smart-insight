@@ -7,7 +7,8 @@ import axios from "axios";
 import mysql from "mysql2/promise";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
-
+import dotenv from "dotenv";
+dotenv.config();
 const app: Application = express();
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000,
@@ -19,7 +20,7 @@ app.use(cors());
 app.use("/", router);
 
 app.use(limiter);
-const port = appConfig.port;
+const port = process.env.PORT;
 export const sqlConnection = mysql.createPool({
   host: "localhost",
   user: "root",
