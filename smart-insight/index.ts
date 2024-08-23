@@ -38,12 +38,14 @@ const start = async () => {
 };
 
 const createAutobots = async () => {
-  for (let i = 0; i < 500; i++) {
-    try {
-      const res = await axios.get(
-        "https://jsonplaceholder.typicode.com/users/1"
+  try {
+    for (let i = 0; i < 500; i++) {
+      // Fetch a random user
+      const userId = Math.floor(Math.random() * 10) + 1;
+      const userRes = await axios.get(
+        `https://jsonplaceholder.typicode.com/users/${userId}`
       );
-      const autobotName: string = res.data.name;
+      const autobotName: string = userRes.data.name;
 
       // Insert the autobot and wait for the result
       const [autobotResults]: any = await sqlConnection.execute(
@@ -54,8 +56,9 @@ const createAutobots = async () => {
 
       // Create Posts
       for (let j = 0; j < 10; j++) {
+        const postId = Math.floor(Math.random() * 100) + 1; // Adjust range as needed
         const postRes = await axios.get(
-          "https://jsonplaceholder.typicode.com/posts/1"
+          `https://jsonplaceholder.typicode.com/posts/${postId}`
         );
         const postTitle: string = postRes.data.title;
         const postBody: string = postRes.data.body;
@@ -65,30 +68,30 @@ const createAutobots = async () => {
           "INSERT INTO Posts (title, body, autobot_id) VALUES (?, ?, ?)",
           [postTitle, postBody, autobotId]
         );
-
-        const postId: number = postResults.insertId;
+        const postIdInserted: number = postResults.insertId;
 
         // Create Comments
         for (let k = 0; k < 10; k++) {
+          const commentId = Math.floor(Math.random() * 500) + 1; // Adjust range as needed
           const commentRes = await axios.get(
-            "https://jsonplaceholder.typicode.com/comments/1"
+            `https://jsonplaceholder.typicode.com/comments/${commentId}`
           );
           const commentBody: string = commentRes.data.body;
 
           // Insert the comment and wait for the result
           await sqlConnection.execute(
             "INSERT INTO Comments (body, post_id) VALUES (?, ?)",
-            [commentBody, postId]
+            [commentBody, postIdInserted]
           );
         }
       }
-    } catch (error) {
-      console.error("Error during autobot creation process:", error);
     }
+  } catch (error) {
+    console.error("Error during autobot creation process:", error);
   }
 };
 
-cron.schedule("0 * * * *", async () => {
+cron.schedule("* * * * *", async () => {
   try {
     createAutobots();
   } catch (error) {
