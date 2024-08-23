@@ -5,12 +5,21 @@ import cron from "node-cron";
 import router from "./routes";
 import axios from "axios";
 import mysql from "mysql2/promise";
-const port = appConfig.port;
+import cors from "cors";
+import rateLimit from "express-rate-limit";
 
 const app: Application = express();
+const limiter = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  max: 10,
+  message: "Too many requests from this IP, please try again later.",
+});
 app.use(express.json());
 app.use("/", router);
+app.use(cors());
+app.use(limiter);
 
+const port = appConfig.port;
 export const sqlConnection = mysql.createPool({
   host: "localhost",
   user: "root",
