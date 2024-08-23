@@ -15,8 +15,8 @@ const limiter = rateLimit({
   message: "Too many requests from this IP, please try again later.",
 });
 app.use(express.json());
-app.use("/", router);
 app.use(cors());
+app.use("/", router);
 
 app.use(limiter);
 const port = appConfig.port;
